@@ -141,7 +141,7 @@ Este guia assume que você **nunca** configurou um GitHub App. Siga na ordem.
 | --- | --- |
 | **GitHub App name** | Nome único, ex. `PR Assistant Gabriel` (precisa estar disponível) |
 | **Description** | Opcional. Ex.: `AI code review bot for Pull Requests` |
-| **Homepage URL** | URL da Vercel, ex. `https://pr-reviewer-ai.vercel.app` · ou o repo: `https://github.com/gabriel-s-amorim/pr-reviewer-ai` |
+| **Homepage URL** | `https://pr-reviewer-ai-zeta.vercel.app` (ou o repo: `https://github.com/gabriel-s-amorim/pr-reviewer-ai`) |
 
 ### Identifying and authorizing users (OAuth) — deixe vazio / desligado
 
@@ -166,7 +166,7 @@ Este bot **não** faz login de usuário. Ele só age como App instalado no repo.
 | Campo | Valor |
 | --- | --- |
 | **Active** | ✅ **marcado** |
-| **Webhook URL** | **Produção (recomendado):** `https://SEU-PROJETO.vercel.app/api/webhooks/github` · Não precisa de localhost nem smee se o deploy na Vercel já estiver no ar |
+| **Webhook URL** | `https://pr-reviewer-ai-zeta.vercel.app/api/webhooks/github` · Não precisa de localhost nem smee |
 | **Secret** | Invente uma string longa e aleatória. **Guarde agora** — vai nas env vars da Vercel como `GITHUB_WEBHOOK_SECRET` |
 
 > Ordem prática: 1) deploy na Vercel → 2) criar o GitHub App com a URL de produção → 3) colar App ID, private key, secret e Redis/Anthropic nas Environment Variables da Vercel → 4) Redeploy.
