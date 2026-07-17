@@ -1,0 +1,38 @@
+{
+  "action": "opened",
+  "number": 42,
+  "pull_request": {
+    "number": 42,
+    "title": "Add fetchUser helper and cleanup naming",
+    "body": "This PR adds a small user fetch helper. Used for local webhook simulation.",
+    "html_url": "https://github.com/example-org/demo-repo/pull/42",
+    "head": {
+      "sha": "abc123def4567890abc123def4567890abc123de",
+      "ref": "feature/fetch-user"
+    },
+    "base": {
+      "ref": "main"
+    },
+    "user": {
+      "login": "octocat"
+    },
+    "additions": 40,
+    "deletions": 6,
+    "changed_files": 3
+  },
+  "repository": {
+    "id": 1296269,
+    "name": "demo-repo",
+    "full_name": "example-org/demo-repo",
+    "owner": {
+      "login": "example-org"
+    }
+  },
+  "installation": {
+    "id": 12345678
+  },
+  "sender": {
+    "login": "octocat",
+    "type": "User"
+  }
+}
