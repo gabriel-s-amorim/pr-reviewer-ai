@@ -16,7 +16,6 @@ export async function analyzePullRequestDiff(
   const response = await client.messages.create({
     model: env.ANTHROPIC_MODEL,
     max_tokens: 4096,
-    temperature: 0.2,
     system: buildAnalysisSystemPrompt(),
     messages: [
       {
