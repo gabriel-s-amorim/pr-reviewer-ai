@@ -300,7 +300,7 @@ Se nada acontecer:
 | `GITHUB_APP_PRIVATE_KEY` | Chave privada PEM (ou Base64) | Private keys → Generate a private key |
 | `GITHUB_WEBHOOK_SECRET` | Segredo HMAC do webhook | Você define na criação do App (Webhook secret) |
 | `ANTHROPIC_API_KEY` | Chave da API Claude | https://console.anthropic.com → API Keys |
-| `ANTHROPIC_MODEL` | Modelo (opcional) | Default: `claude-sonnet-4-20250514` |
+| `ANTHROPIC_MODEL` | Modelo (opcional) | Default: `claude-sonnet-5` |
 | `UPSTASH_REDIS_REST_URL` | URL REST do Redis | https://console.upstash.com → Redis → REST API |
 | `UPSTASH_REDIS_REST_TOKEN` | Token REST | Mesma tela do Upstash |
 | `PR_ASSISTANT_DRY_RUN` | `true`/`false` | Só local/fixture |
