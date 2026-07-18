@@ -3,6 +3,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js_14-black?style=flat-square&logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-21_passing-brightgreen?style=flat-square)
 ![Anthropic](https://img.shields.io/badge/Claude_API-D4A27F?style=flat-square)
 ![Upstash](https://img.shields.io/badge/Upstash_Redis-00E9A3?style=flat-square&logo=redis&logoColor=black)
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=flat-square&logo=vercel)
@@ -29,6 +30,51 @@ When someone opens or updates a PR, PR Assistant receives the webhook, analyzes 
 | Redis dedup | Filtered-diff hash skips rebase/push with no real change |
 | Rate limit | Per installation/repo (Upstash Ratelimit) |
 | Local dry-run | Exercise the flow with a fixture — no real App needed |
+
+---
+
+## Proof it works
+
+Real evidence of the bot commenting on a Pull Request — not a mocked UI.
+
+![Real PR Assistant comment on a test Pull Request](./docs/screenshots/pr-review-example.png)
+
+> **Caption:** screenshot from a **deliberate** smoke-test PR (`test/pr-assistant-smoke`) seeded with intentional code issues (e.g. `fetch` without checking `res.ok`, delete with no error handling, duplicated helper). That file is not production store logic — it exists only to validate the bot. The 4 findings above were posted automatically by the production GitHub App (Haiku, Portuguese comment).
+
+<!-- Optional video: drop a short GIF/MP4 of "open PR → bot comments" here.
+Example:
+![Full PR Assistant flow](./docs/screenshots/pr-review-flow.gif)
+-->
+
+### Regenerate the capture
+
+With a test PR open (and the bot comment already posted):
+
+```bash
+pnpm exec playwright install chromium   # first time only
+
+# PowerShell
+$env:CAPTURE_PR_URL="https://github.com/YOUR_USER/YOUR_REPO/pull/1"
+pnpm capture:pr-review
+
+# bash / macOS / Linux
+# CAPTURE_PR_URL="https://github.com/YOUR_USER/YOUR_REPO/pull/1" pnpm capture:pr-review
+```
+
+The script opens the PR page, waits for the bot comment, and saves a date-versioned PNG under `docs/screenshots/` (e.g. `pr-review-2026-07-17.png`). Promote the cleanest capture to `pr-review-example.png` for the README.
+
+---
+
+## Results
+
+| Metric | Value |
+| --- | --- |
+| Automated tests (Vitest) | **21** passing |
+| Analysis categories | **8** — bug, security, error handling, duplication, naming, performance, style, other |
+| Production evidence | Real comment on the smoke-test PR (screenshot above) |
+| Default model | `claude-haiku-4-5` (low cost for portfolio-sized reviews) |
+
+> The `tests-21_passing` badge is static (matches the local suite). For a live GitHub badge, add an Actions workflow that runs `pnpm test` on every push.
 
 ---
 

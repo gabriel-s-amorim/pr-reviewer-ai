@@ -3,6 +3,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js_14-black?style=flat-square&logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-21_passing-brightgreen?style=flat-square)
 ![Anthropic](https://img.shields.io/badge/Claude_API-D4A27F?style=flat-square)
 ![Upstash](https://img.shields.io/badge/Upstash_Redis-00E9A3?style=flat-square&logo=redis&logoColor=black)
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=flat-square&logo=vercel)
@@ -29,6 +30,51 @@ Quando alguém abre ou atualiza um PR, o PR Assistant recebe o webhook, analisa 
 | Dedup com Redis | Hash do diff filtrado evita reanalisar rebase/push sem mudança |
 | Rate limit | Limite por instalação/repositório (Upstash Ratelimit) |
 | Dry-run local | Testa o fluxo com fixture sem App/Redis/Anthropic reais |
+
+---
+
+## Prova de funcionamento
+
+Evidência real do bot comentando num Pull Request — não é mock de UI.
+
+![Comentário real do PR Assistant num Pull Request de teste](./docs/screenshots/pr-review-example.png)
+
+> **Legenda:** screenshot de um PR de teste (`test/pr-assistant-smoke`) criado **propositalmente** com falhas intencionais (ex.: `fetch` sem checar `res.ok`, delete sem tratamento de erro, função duplicada). O arquivo não faz parte do fluxo de produção da loja — serve só para validar a análise do bot. Os 4 achados acima foram gerados automaticamente pelo GitHub App em produção (Haiku, comentário em português).
+
+<!-- Vídeo (opcional): cole aqui um GIF/MP4 curto do fluxo "abrir PR → bot comentar".
+Exemplo:
+![Fluxo completo do PR Assistant](./docs/screenshots/pr-review-flow.gif)
+-->
+
+### Regenerar a captura
+
+Com um PR de teste aberto (e o bot já tendo comentado), rode:
+
+```bash
+pnpm exec playwright install chromium   # só na primeira vez
+
+# PowerShell
+$env:CAPTURE_PR_URL="https://github.com/SEU_USER/SEU_REPO/pull/1"
+pnpm capture:pr-review
+
+# bash / macOS / Linux
+# CAPTURE_PR_URL="https://github.com/SEU_USER/SEU_REPO/pull/1" pnpm capture:pr-review
+```
+
+O script abre a página do PR, espera o comentário do bot e salva um PNG versionado por data em `docs/screenshots/` (ex. `pr-review-2026-07-17.png`). Depois você pode promover a captura mais limpa para `pr-review-example.png` no README.
+
+---
+
+## Resultados
+
+| Métrica | Valor |
+| --- | --- |
+| Testes automatizados (Vitest) | **21** passando |
+| Categorias de análise | **8** — bug, segurança, tratamento de erro, duplicação, nomenclatura, performance, estilo, outros |
+| Evidência em produção | Comentário real no PR de smoke-test (screenshot acima) |
+| Modelo padrão | `claude-haiku-4-5` (custo baixo para reviews de portfólio) |
+
+> Badge `tests-21_passing` é estático (reflete o suite local). Para um badge dinâmico no GitHub, o próximo passo natural é um workflow Actions rodando `pnpm test` em cada push.
 
 ---
 
@@ -340,6 +386,8 @@ src/
   lib/review/dedup.ts                # Redis hash por PR
 fixtures/pull_request.opened.json    # Payload de exemplo
 scripts/test-webhook.ts              # pnpm test:webhook
+scripts/capture-pr-review.ts         # pnpm capture:pr-review (Playwright)
+docs/screenshots/                    # Evidências visuais do bot
 tests/                               # Vitest (lógica pura)
 ```
 
