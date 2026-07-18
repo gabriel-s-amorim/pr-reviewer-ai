@@ -3,23 +3,23 @@ import { formatReviewComment } from "@/lib/review/format-comment";
 import type { AnalysisResult } from "@/lib/ai/schema";
 
 const mockAnalysis: AnalysisResult = {
-  summary: "The PR adds a fetch helper but misses error handling.",
+  summary: "O PR adiciona um helper de fetch, mas falha no tratamento de erro.",
   overall_assessment: "needs_attention",
   findings: [
     {
       severity: "warning",
       category: "error_handling",
-      title: "Missing non-OK response handling",
-      description: "fetchUser ignores HTTP status codes before parsing JSON.",
+      title: "Falta checagem de resposta não-OK",
+      description: "fetchUser ignora o status HTTP antes de fazer parse do JSON.",
       file: "src/utils/fetchUser.ts",
       line: 4,
-      suggestion: "Check res.ok and throw or return a typed error.",
+      suggestion: "Verifique res.ok e lance ou retorne um erro tipado.",
     },
     {
       severity: "suggestion",
       category: "duplication",
-      title: "Duplicated name formatting",
-      description: "formatName and formatNameDup share the same logic.",
+      title: "Formatação de nome duplicada",
+      description: "formatName e formatNameDup compartilham a mesma lógica.",
       file: "src/utils/fetchUser.ts",
     },
   ],
@@ -31,34 +31,34 @@ describe("formatReviewComment", () => {
       modelLabel: "claude-test",
     });
 
-    expect(markdown).toContain("## 🤖 PR Assistant Review");
-    expect(markdown).toContain("Needs attention");
-    expect(markdown).toContain("Missing non-OK response handling");
+    expect(markdown).toContain("## 🤖 Review do PR Assistant");
+    expect(markdown).toContain("Precisa de atenção");
+    expect(markdown).toContain("Falta checagem de resposta não-OK");
     expect(markdown).toContain("`src/utils/fetchUser.ts`");
     expect(markdown).toContain("L4");
-    expect(markdown).toContain("Check res.ok");
-    expect(markdown).toContain("Duplicated name formatting");
-    expect(markdown).toContain("Model: claude-test");
+    expect(markdown).toContain("Verifique res.ok");
+    expect(markdown).toContain("Formatação de nome duplicada");
+    expect(markdown).toContain("Modelo: claude-test");
   });
 
   it("mentions truncation when the PR was partially analyzed", () => {
     const markdown = formatReviewComment(mockAnalysis, {
       truncated: true,
-      truncationReason: "Diff too large",
+      truncationReason: "Diff muito grande",
     });
 
-    expect(markdown).toContain("Partial analysis");
-    expect(markdown).toContain("Diff too large");
+    expect(markdown).toContain("Análise parcial");
+    expect(markdown).toContain("Diff muito grande");
   });
 
   it("handles empty findings", () => {
     const markdown = formatReviewComment({
-      summary: "Looks clean.",
+      summary: "Parece limpo.",
       overall_assessment: "looks_good",
       findings: [],
     });
 
-    expect(markdown).toContain("Looks good");
-    expect(markdown).toContain("No high-signal issues");
+    expect(markdown).toContain("Parece bom");
+    expect(markdown).toContain("Nenhum problema de alto sinal");
   });
 });

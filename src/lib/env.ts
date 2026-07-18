@@ -37,7 +37,7 @@ const baseSchema = z.object({
   GITHUB_WEBHOOK_SECRET: z.string().min(1, "GITHUB_WEBHOOK_SECRET is required"),
   PR_ASSISTANT_DRY_RUN: boolFromEnv,
   DIFF_IGNORE_PATTERNS: z.string().optional(),
-  ANTHROPIC_MODEL: z.string().default("claude-sonnet-5"),
+  ANTHROPIC_MODEL: z.string().default("claude-haiku-4-5"),
 
   // Optional in dry-run; required otherwise
   GITHUB_APP_ID: z.string().optional(),

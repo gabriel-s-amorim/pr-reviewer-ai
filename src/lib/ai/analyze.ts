@@ -44,26 +44,26 @@ export async function analyzePullRequestDiff(
 /** Deterministic mock used by dry-run / local fixture flows. */
 export function mockAnalyzePullRequestDiff(ctx: PromptContext): AnalysisResult {
   return {
-    summary: `Dry-run analysis for ${ctx.owner}/${ctx.repo}#${ctx.prNumber} ("${ctx.title}"). No external AI call was made.`,
+    summary: `Análise dry-run de ${ctx.owner}/${ctx.repo}#${ctx.prNumber} ("${ctx.title}"). Nenhuma chamada externa à IA foi feita.`,
     overall_assessment: "needs_attention",
     findings: [
       {
         severity: "warning",
         category: "error_handling",
-        title: "Example: missing error handling",
+        title: "Exemplo: falta tratamento de erro",
         description:
-          "This is a sample finding generated in dry-run mode so you can verify comment formatting end-to-end.",
+          "Finding de exemplo gerado no modo dry-run para validar a formatação do comentário de ponta a ponta.",
         file: ctx.diffText.includes("src/")
           ? "src/example.ts"
           : undefined,
-        suggestion: "Wrap the fallible call in try/catch and return a typed error.",
+        suggestion: "Envolva a chamada falível em try/catch e retorne um erro tipado.",
       },
       {
         severity: "suggestion",
         category: "naming",
-        title: "Example: clarify variable names",
+        title: "Exemplo: esclareça nomes de variáveis",
         description:
-          "Prefer descriptive names over abbreviations so future reviewers understand intent quickly.",
+          "Prefira nomes descritivos a abreviações para facilitar a leitura em reviews futuros.",
       },
     ],
   };

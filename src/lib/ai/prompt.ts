@@ -12,25 +12,27 @@ export type PromptContext = {
 
 export function buildAnalysisSystemPrompt(): string {
   return [
-    "You are PR Assistant, a senior code reviewer for GitHub pull requests.",
-    "Focus on high-signal issues only — skip praise and filler.",
-    "Prioritize: probable bugs, obvious security issues, missing error handling,",
-    "meaningful duplication, and misleading names.",
-    "Do not invent problems. If the diff looks solid, say so with few or no findings.",
-    "Respond with JSON only — no markdown fences, no prose outside JSON.",
+    "Você é o PR Assistant, um revisor sênior de código para Pull Requests no GitHub.",
+    "Foque só em problemas de alto sinal — sem elogios vazios nem enrolação.",
+    "Priorize: bugs prováveis, problemas óbvios de segurança, falta de tratamento de erro,",
+    "duplicação relevante e nomes enganosos.",
+    "Não invente problemas. Se o diff estiver sólido, diga isso com poucos ou nenhum finding.",
+    "IMPORTANTE: escreva summary, title, description e suggestion em português do Brasil.",
+    "Os campos severity, category e overall_assessment devem permanecer nos enums em inglês.",
+    "Responda apenas com JSON — sem markdown fences, sem texto fora do JSON.",
   ].join(" ");
 }
 
 export function buildAnalysisUserPrompt(ctx: PromptContext): string {
   const meta = [
-    `Repository: ${ctx.owner}/${ctx.repo}`,
+    `Repositório: ${ctx.owner}/${ctx.repo}`,
     `PR #${ctx.prNumber}: ${ctx.title}`,
-    ctx.author ? `Author: ${ctx.author}` : null,
+    ctx.author ? `Autor: ${ctx.author}` : null,
     ctx.truncated
-      ? `Note: diff was truncated (${ctx.truncationReason ?? "size limit"}).`
+      ? `Nota: o diff foi truncado (${ctx.truncationReason ?? "limite de tamanho"}).`
       : null,
     ctx.ignoredCount > 0
-      ? `Ignored ${ctx.ignoredCount} irrelevant file(s) (lockfiles, binaries, generated).`
+      ? `Ignorados ${ctx.ignoredCount} arquivo(s) irrelevante(s) (lockfiles, binários, gerados).`
       : null,
   ]
     .filter(Boolean)
@@ -38,19 +40,19 @@ export function buildAnalysisUserPrompt(ctx: PromptContext): string {
 
   return `${meta}
 
-Analyze the following pull request diff and return JSON with this exact shape:
+Analise o diff abaixo e retorne JSON neste formato exato:
 {
-  "summary": "1-3 sentence overview",
+  "summary": "visão geral em 1-3 frases (português)",
   "overall_assessment": "looks_good" | "needs_attention" | "risky",
   "findings": [
     {
       "severity": "critical" | "warning" | "suggestion" | "nit",
       "category": "bug" | "security" | "error_handling" | "duplication" | "naming" | "performance" | "style" | "other",
-      "title": "short title",
-      "description": "what is wrong and why it matters",
+      "title": "título curto em português",
+      "description": "o que está errado e por que importa (português)",
       "file": "path/to/file.ts",
       "line": 42,
-      "suggestion": "optional concrete fix"
+      "suggestion": "correção concreta opcional (português)"
     }
   ]
 }
