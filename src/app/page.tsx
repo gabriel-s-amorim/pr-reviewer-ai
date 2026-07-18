@@ -1,4 +1,7 @@
+import Image from "next/image";
+
 const REPO_URL = "https://github.com/gabriel-s-amorim/pr-reviewer-ai";
+const PORTFOLIO_URL = "https://gabrielamorimdev.vercel.app/";
 
 export default function Home() {
   return (
@@ -149,7 +152,44 @@ diff --git a/src/api/user.ts
         </div>
       </section>
 
-      <section className="relative px-6 py-24 sm:px-10">
+      <section
+        id="resultado-real"
+        className="relative border-t border-[var(--line)] px-6 py-24 sm:px-10"
+      >
+        <div className="mx-auto max-w-6xl">
+          <p className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.22em] text-[var(--accent)]">
+            Evidência
+          </p>
+          <h2 className="mt-3 max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
+            Isso não é conceito — é resultado real
+          </h2>
+          <p className="mt-4 max-w-lg text-[var(--ink-soft)]">
+            Comentário postado automaticamente pelo GitHub App num Pull Request
+            de teste em produção.
+          </p>
+
+          <figure className="mt-12">
+            <div className="overflow-hidden rounded-sm border border-[var(--line)] bg-white shadow-[0_24px_80px_-40px_rgba(20,32,28,0.45)]">
+              <Image
+                src="/pr-review-example.png"
+                alt="Comentário real do PR Assistant num Pull Request de teste"
+                width={1280}
+                height={960}
+                className="h-auto w-full"
+                priority={false}
+              />
+            </div>
+            <figcaption className="mt-5 max-w-2xl font-[family-name:var(--font-mono)] text-xs leading-relaxed text-[var(--ink-soft)] sm:text-sm">
+              PR de teste criado propositalmente com falhas intencionais de
+              código (ex.: fetch sem checar status, delete sem tratamento de
+              erro) — não é um trecho de produção da loja. Serve só para
+              validar a análise do bot.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section className="relative border-t border-[var(--line)] bg-[var(--mist)] px-6 py-24 sm:px-10">
         <div className="mx-auto max-w-6xl">
           <h2 className="font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[var(--ink)] sm:text-5xl">
             Feito como produto real
@@ -192,17 +232,27 @@ diff --git a/src/api/user.ts
           <p className="font-[family-name:var(--font-display)] text-lg font-bold text-[var(--ink)]">
             PR Assistant
           </p>
-          <p className="font-[family-name:var(--font-mono)] text-xs text-[var(--ink-soft)]">
-            Portfolio · MIT ·{" "}
+          <div className="flex flex-col gap-2 sm:items-end">
+            <p className="font-[family-name:var(--font-mono)] text-xs text-[var(--ink-soft)]">
+              Portfolio · MIT ·{" "}
+              <a
+                href={REPO_URL}
+                className="underline decoration-[var(--line)] underline-offset-4 transition hover:text-[var(--accent)]"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                gabriel-s-amorim/pr-reviewer-ai
+              </a>
+            </p>
             <a
-              href={REPO_URL}
-              className="underline decoration-[var(--line)] underline-offset-4 transition hover:text-[var(--accent)]"
+              href={PORTFOLIO_URL}
               target="_blank"
               rel="noopener noreferrer"
+              className="font-[family-name:var(--font-mono)] text-[11px] text-[var(--ink-soft)]/80 transition hover:text-[var(--accent)]"
             >
-              gabriel-s-amorim/pr-reviewer-ai
+              um projeto de Gabriel Amorim ↗
             </a>
-          </p>
+          </div>
         </div>
       </footer>
     </div>

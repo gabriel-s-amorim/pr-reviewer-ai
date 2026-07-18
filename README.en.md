@@ -35,33 +35,46 @@ When someone opens or updates a PR, PR Assistant receives the webhook, analyzes 
 
 ## Proof it works
 
-Real evidence of the bot commenting on a Pull Request — not a mocked UI.
+Real evidence of the bot — from opening a PR to the comment on screen.
+
+<p align="center">
+  <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: open PR → PR Assistant comments" width="800" />
+</p>
+
+<p align="center">
+  <em>Recorded flow: create Pull Request → wait → PR Assistant comment appears.</em>
+</p>
+
+<details>
+<summary>Static screenshot (fallback until the GIF exists)</summary>
 
 ![Real PR Assistant comment on a test Pull Request](./docs/screenshots/pr-review-example.png)
 
-> **Caption:** screenshot from a **deliberate** smoke-test PR (`test/pr-assistant-smoke`) seeded with intentional code issues (e.g. `fetch` without checking `res.ok`, delete with no error handling, duplicated helper). That file is not production store logic — it exists only to validate the bot. The 4 findings above were posted automatically by the production GitHub App (Haiku, Portuguese comment).
+</details>
 
-<!-- Optional video: drop a short GIF/MP4 of "open PR → bot comments" here.
-Example:
-![Full PR Assistant flow](./docs/screenshots/pr-review-flow.gif)
--->
+> **Caption:** the demo PR uses **intentional** code issues (`test/pr-assistant-smoke`) — not production store logic. It only exists to validate the bot (Haiku, Portuguese comment).
 
-### Regenerate the capture
-
-With a test PR open (and the bot comment already posted):
+### Regenerate the demo (video → GIF)
 
 ```bash
 pnpm exec playwright install chromium   # first time only
+pnpm auth:github                        # once: log in in the browser, press Enter in the terminal
 
-# PowerShell
-$env:CAPTURE_PR_URL="https://github.com/YOUR_USER/YOUR_REPO/pull/1"
-pnpm capture:pr-review
-
-# bash / macOS / Linux
-# CAPTURE_PR_URL="https://github.com/YOUR_USER/YOUR_REPO/pull/1" pnpm capture:pr-review
+# PowerShell — compare URL with your test branch already pushed
+$env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...test/pr-assistant-smoke?expand=1"
+pnpm record:demo
 ```
 
-The script opens the PR page, waits for the bot comment, and saves a date-versioned PNG under `docs/screenshots/` (e.g. `pr-review-2026-07-17.png`). Promote the cleanest capture to `pr-review-example.png` for the README.
+Outputs:
+- `docs/videos/pr-assistant-demo-raw.webm` (raw, gitignored)
+- `docs/screenshots/pr-assistant-demo.gif` (if `ffmpeg` is installed)
+
+Static screenshot of an already-posted comment:
+
+```powershell
+$env:CAPTURE_PR_URL="https://github.com/gabriel-s-amorim/nativa-store/pull/1"
+pnpm capture:pr-review
+```
 
 ---
 

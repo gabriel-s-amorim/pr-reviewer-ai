@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Playwright auth session (never commit)
+playwright/.auth/
+
+# Raw demo videos (large); keep optimized GIF in docs/screenshots/
+docs/videos/
