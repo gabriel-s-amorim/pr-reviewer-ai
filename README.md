@@ -38,10 +38,7 @@ Quando alguém abre ou atualiza um PR, o PR Assistant recebe o webhook, analisa 
 Evidência real do bot em produção — não é mock de UI.
 
 <p align="center">
-  <video src="./docs/screenshots/pr-assistant-demo.webm" controls width="800" autoplay muted loop playsinline>
-    Seu navegador não suporta vídeo HTML5.
-    <a href="./docs/screenshots/pr-assistant-demo.webm">Baixar a demo</a>
-  </video>
+  <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: abrir PR → PR Assistant comenta" width="640" />
 </p>
 
 <p align="center">

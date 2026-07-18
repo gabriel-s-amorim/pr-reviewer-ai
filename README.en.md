@@ -38,10 +38,7 @@ When someone opens or updates a PR, PR Assistant receives the webhook, analyzes 
 Real production evidence — not a mocked UI.
 
 <p align="center">
-  <video src="./docs/screenshots/pr-assistant-demo.webm" controls width="800" autoplay muted loop playsinline>
-    Your browser does not support HTML5 video.
-    <a href="./docs/screenshots/pr-assistant-demo.webm">Download the demo</a>
-  </video>
+  <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: open PR → PR Assistant comments" width="640" />
 </p>
 
 <p align="center">
