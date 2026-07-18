@@ -35,7 +35,7 @@ Quando alguém abre ou atualiza um PR, o PR Assistant recebe o webhook, analisa 
 
 ## Prova de funcionamento
 
-Evidência real do bot — do PR aberto ao comentário na tela.
+Evidência real do bot em produção — não é mock de UI.
 
 <p align="center">
   <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: abrir PR → PR Assistant comenta" width="800" />
@@ -45,34 +45,26 @@ Evidência real do bot — do PR aberto ao comentário na tela.
   <em>Fluxo gravado: criar Pull Request → aguardar → comentário do PR Assistant aparece.</em>
 </p>
 
-<details>
-<summary>Screenshot estática (fallback enquanto o GIF não existir)</summary>
+<p align="center">
+  <img src="./docs/screenshots/pr-review-2026-07-18.png" alt="Comentário real do PR Assistant no Pull Request" width="800" />
+</p>
 
-![Comentário real do PR Assistant num Pull Request de teste](./docs/screenshots/pr-review-example.png)
+<p align="center">
+  <em>Comentário postado automaticamente (português, modelo Haiku) com 4 achados: HTTP sem <code>res.ok</code>, delete sem erro, duplicação e nit de estilo.</em>
+</p>
 
-</details>
+> **Legenda:** PR de teste criado **propositalmente** com falhas intencionais de código — não é um trecho de produção da loja. Serve só para validar a análise do bot.
 
-> **Legenda:** o PR de demo usa falhas **intencionais** de código (`test/pr-assistant-smoke`) — não é um trecho de produção da loja. Serve só para validar a análise do bot (Haiku, comentário em português).
-
-### Regenerar a demo (vídeo → GIF)
-
-```bash
-pnpm exec playwright install chromium   # só na primeira vez
-pnpm auth:github                        # uma vez: login no browser, Enter no terminal
-
-# PowerShell — URL de compare com a branch de teste já pushed
-$env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...test/pr-assistant-smoke?expand=1"
-pnpm record:demo
-```
-
-Saídas:
-- `docs/videos/pr-assistant-demo-raw.webm` (bruto, gitignored)
-- `docs/screenshots/pr-assistant-demo.gif` (se `ffmpeg` estiver instalado)
-
-Screenshot estática de um comentário já postado:
+### Regenerar essas evidências
 
 ```powershell
-$env:CAPTURE_PR_URL="https://github.com/gabriel-s-amorim/nativa-store/pull/1"
+# GIF (fluxo completo) — exige sessão Playwright + branch de teste pushed
+pnpm auth:github   # uma vez
+$env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...SUA_BRANCH?expand=1"
+pnpm record:demo
+
+# Screenshot do comentário já postado num PR
+$env:CAPTURE_PR_URL="https://github.com/gabriel-s-amorim/nativa-store/pull/NUMERO"
 pnpm capture:pr-review
 ```
 

@@ -15,7 +15,7 @@
 import { execFileSync, spawnSync } from "child_process";
 import { existsSync, mkdirSync, readdirSync, renameSync } from "fs";
 import { join, resolve } from "path";
-import { chromium } from "playwright";
+import { launchTrustedBrowser } from "./playwright-browser";
 
 // ── Easy-to-edit PR copy ────────────────────────────────────────────────────
 const PR_TITLE =
@@ -101,8 +101,7 @@ async function main() {
   console.log("→ Starting headed recording…");
   console.log(`→ Compare URL: ${compareUrl}`);
 
-  const browser = await chromium.launch({
-    headless: false,
+  const browser = await launchTrustedBrowser({
     slowMo: 80,
   });
 
@@ -116,24 +115,65 @@ async function main() {
   });
 
   const page = await context.newPage();
+  const debugShot = resolve(VIDEO_DIR, "demo-debug.png");
 
   try {
     await page.goto(compareUrl, {
       waitUntil: "domcontentloaded",
       timeout: 60_000,
     });
+    await page.waitForLoadState("networkidle").catch(() => undefined);
 
-    // Title (GitHub compare / new PR form)
-    const titleInput = page.locator("#pull_request_title").first();
-    await titleInput.waitFor({ state: "visible", timeout: 30_000 });
+    if (page.url().includes("/login")) {
+      throw new Error(
+        "Sessão do GitHub expirou ou não foi carregada. Rode novamente: pnpm auth:github",
+      );
+    }
+
+    // Some compare views need an explicit open of the PR form
+    const openForm = page
+      .locator(
+        'a:has-text("Create pull request"), summary:has-text("Create pull request"), button:has-text("Create pull request"), a:has-text("Criar pull request"), button:has-text("Criar pull request")',
+      )
+      .first();
+    if (await openForm.isVisible().catch(() => false)) {
+      // Only click if the title field is not already on screen
+      const titleAlready = await page
+        .locator('#pull_request_title, input[name="pull_request[title]"]')
+        .first()
+        .isVisible()
+        .catch(() => false);
+      if (!titleAlready) {
+        await openForm.click();
+        await page.waitForTimeout(800);
+      }
+    }
+
+    const titleInput = page
+      .locator(
+        '#pull_request_title, input[name="pull_request[title]"], input[aria-label="Title"], input[placeholder="Title"]',
+      )
+      .first();
+
+    try {
+      await titleInput.waitFor({ state: "visible", timeout: 45_000 });
+    } catch {
+      await page.screenshot({ path: debugShot, fullPage: true });
+      throw new Error(
+        `Campo de título do PR não apareceu. URL atual: ${page.url()}. Screenshot: ${debugShot}`,
+      );
+    }
+
+    await titleInput.fill("");
     await titleInput.fill(PR_TITLE);
 
-    // Description — GitHub uses a textarea or CodeMirror depending on UI
-    const bodyTextarea = page.locator("#pull_request_body").first();
+    const bodyTextarea = page
+      .locator('#pull_request_body, textarea[name="pull_request[body]"]')
+      .first();
     if (await bodyTextarea.count()) {
       await bodyTextarea.fill(PR_BODY);
     } else {
-      const cm = page.locator(".CodeMirror").first();
+      const cm = page.locator(".CodeMirror, .CommentBox-textarea").first();
       if (await cm.count()) {
         await cm.click();
         await page.keyboard.press("Control+A");
@@ -141,17 +181,16 @@ async function main() {
       }
     }
 
-    // Create pull request
+    // Avoid matching hidden "Create saved search" — use exact accessible name
     const createBtn = page
-      .locator('button:has-text("Create pull request"), button:has-text("Create Pull Request")')
+      .getByRole("button", { name: /^(Create pull request|Criar pull request)$/i })
       .first();
-    await createBtn.waitFor({ state: "visible", timeout: 15_000 });
+    await createBtn.waitFor({ state: "visible", timeout: 20_000 });
     await createBtn.click();
 
-    // Wait until we land on the PR conversation page
     await page.waitForURL(/\/pull\/\d+/, { timeout: 60_000 });
 
-    console.log("→ PR criado. Aguardando comentário do bot…");
+    console.log(`→ PR criado (${page.url()}). Aguardando comentário do bot…`);
 
     const comment = page
       .locator(".timeline-comment, .review-comment, [id^='issuecomment-']")
@@ -171,10 +210,12 @@ async function main() {
       el?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, BOT_TEXT);
 
-    // Let the final frame "breathe" for the video
     await page.waitForTimeout(2800);
 
     console.log("✓ Comentário do bot visível — encerrando gravação.");
+  } catch (error) {
+    await page.screenshot({ path: debugShot, fullPage: true }).catch(() => undefined);
+    throw error;
   } finally {
     await context.close();
     await browser.close();

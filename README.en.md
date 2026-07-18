@@ -35,7 +35,7 @@ When someone opens or updates a PR, PR Assistant receives the webhook, analyzes 
 
 ## Proof it works
 
-Real evidence of the bot — from opening a PR to the comment on screen.
+Real production evidence — not a mocked UI.
 
 <p align="center">
   <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: open PR → PR Assistant comments" width="800" />
@@ -45,34 +45,26 @@ Real evidence of the bot — from opening a PR to the comment on screen.
   <em>Recorded flow: create Pull Request → wait → PR Assistant comment appears.</em>
 </p>
 
-<details>
-<summary>Static screenshot (fallback until the GIF exists)</summary>
+<p align="center">
+  <img src="./docs/screenshots/pr-review-2026-07-18.png" alt="Real PR Assistant comment on a Pull Request" width="800" />
+</p>
 
-![Real PR Assistant comment on a test Pull Request](./docs/screenshots/pr-review-example.png)
+<p align="center">
+  <em>Comment posted automatically (Portuguese, Haiku) with 4 findings: HTTP without <code>res.ok</code>, delete without error handling, duplication, and a style nit.</em>
+</p>
 
-</details>
+> **Caption:** this is a **deliberate** test PR with intentional code issues — not production store logic. It only exists to validate the bot.
 
-> **Caption:** the demo PR uses **intentional** code issues (`test/pr-assistant-smoke`) — not production store logic. It only exists to validate the bot (Haiku, Portuguese comment).
-
-### Regenerate the demo (video → GIF)
-
-```bash
-pnpm exec playwright install chromium   # first time only
-pnpm auth:github                        # once: log in in the browser, press Enter in the terminal
-
-# PowerShell — compare URL with your test branch already pushed
-$env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...test/pr-assistant-smoke?expand=1"
-pnpm record:demo
-```
-
-Outputs:
-- `docs/videos/pr-assistant-demo-raw.webm` (raw, gitignored)
-- `docs/screenshots/pr-assistant-demo.gif` (if `ffmpeg` is installed)
-
-Static screenshot of an already-posted comment:
+### Regenerate these assets
 
 ```powershell
-$env:CAPTURE_PR_URL="https://github.com/gabriel-s-amorim/nativa-store/pull/1"
+# GIF (full flow) — needs Playwright session + a pushed test branch
+pnpm auth:github   # once
+$env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...YOUR_BRANCH?expand=1"
+pnpm record:demo
+
+# Screenshot of a comment already on a PR
+$env:CAPTURE_PR_URL="https://github.com/gabriel-s-amorim/nativa-store/pull/NUMBER"
 pnpm capture:pr-review
 ```
 
