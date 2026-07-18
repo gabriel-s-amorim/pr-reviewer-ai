@@ -38,7 +38,10 @@ When someone opens or updates a PR, PR Assistant receives the webhook, analyzes 
 Real production evidence — not a mocked UI.
 
 <p align="center">
-  <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: open PR → PR Assistant comments" width="800" />
+  <video src="./docs/screenshots/pr-assistant-demo.webm" controls width="800" autoplay muted loop playsinline>
+    Your browser does not support HTML5 video.
+    <a href="./docs/screenshots/pr-assistant-demo.webm">Download the demo</a>
+  </video>
 </p>
 
 <p align="center">
@@ -58,7 +61,7 @@ Real production evidence — not a mocked UI.
 ### Regenerate these assets
 
 ```powershell
-# GIF (full flow) — needs Playwright session + a pushed test branch
+# Demo video (.webm) — needs Playwright session + a pushed test branch
 pnpm auth:github   # once
 $env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...YOUR_BRANCH?expand=1"
 pnpm record:demo

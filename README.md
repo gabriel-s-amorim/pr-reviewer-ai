@@ -38,7 +38,10 @@ Quando alguém abre ou atualiza um PR, o PR Assistant recebe o webhook, analisa 
 Evidência real do bot em produção — não é mock de UI.
 
 <p align="center">
-  <img src="./docs/screenshots/pr-assistant-demo.gif" alt="Demo: abrir PR → PR Assistant comenta" width="800" />
+  <video src="./docs/screenshots/pr-assistant-demo.webm" controls width="800" autoplay muted loop playsinline>
+    Seu navegador não suporta vídeo HTML5.
+    <a href="./docs/screenshots/pr-assistant-demo.webm">Baixar a demo</a>
+  </video>
 </p>
 
 <p align="center">
@@ -58,7 +61,7 @@ Evidência real do bot em produção — não é mock de UI.
 ### Regenerar essas evidências
 
 ```powershell
-# GIF (fluxo completo) — exige sessão Playwright + branch de teste pushed
+# Vídeo da demo (.webm) — exige sessão Playwright + branch de teste pushed
 pnpm auth:github   # uma vez
 $env:DEMO_COMPARE_URL="https://github.com/gabriel-s-amorim/nativa-store/compare/main...SUA_BRANCH?expand=1"
 pnpm record:demo
@@ -393,7 +396,7 @@ fixtures/pull_request.opened.json    # Payload de exemplo
 scripts/test-webhook.ts              # pnpm test:webhook
 scripts/capture-pr-review.ts         # pnpm capture:pr-review (Playwright)
 scripts/auth-github.ts               # pnpm auth:github (sessão Playwright)
-scripts/record-demo.ts               # pnpm record:demo (vídeo → GIF)
+scripts/record-demo.ts               # pnpm record:demo (grava .webm da demo)
 docs/screenshots/                    # Evidências (PNG/GIF) para README + landing
 public/pr-review-example.png         # Screenshot usada na landing
 tests/                               # Vitest (lógica pura)

@@ -13,7 +13,13 @@
  */
 
 import { execFileSync, spawnSync } from "child_process";
-import { existsSync, mkdirSync, readdirSync, renameSync } from "fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  renameSync,
+} from "fs";
 import { join, resolve } from "path";
 import { launchTrustedBrowser } from "./playwright-browser";
 
@@ -235,15 +241,23 @@ async function main() {
   renameSync(source, RAW_WEBM);
   console.log(`✓ Vídeo bruto: ${RAW_WEBM}`);
 
+  // Stable path referenced by README.md / README.en.md (not gitignored)
+  const readmeWebm = resolve(
+    process.cwd(),
+    "docs",
+    "screenshots",
+    "pr-assistant-demo.webm",
+  );
+  mkdirSync(resolve(process.cwd(), "docs", "screenshots"), { recursive: true });
+  copyFileSync(RAW_WEBM, readmeWebm);
+  console.log(`✓ Vídeo do README: ${readmeWebm}`);
+
   if (hasFfmpeg()) {
-    console.log("→ Convertendo para GIF com ffmpeg…");
+    console.log("→ Convertendo para GIF com ffmpeg (opcional)…");
     convertToGif(RAW_WEBM);
   } else {
-    console.log("\nffmpeg não encontrado — GIF não gerado.");
-    console.log("Instale ffmpeg e rode manualmente:\n");
-    console.log(
-      `ffmpeg -y -i "${RAW_WEBM}" -vf "trim=start=${TRIM_START_SECONDS},setpts=PTS-STARTPTS,fps=12,scale=800:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse" -loop 0 "${GIF_PATH}"`,
-    );
+    console.log("\nffmpeg não encontrado — GIF opcional não gerado.");
+    console.log("O README usa o .webm em docs/screenshots/pr-assistant-demo.webm");
   }
 }
 
