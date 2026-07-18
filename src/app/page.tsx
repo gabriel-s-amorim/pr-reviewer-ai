@@ -164,28 +164,64 @@ diff --git a/src/api/user.ts
             Isso não é conceito — é resultado real
           </h2>
           <p className="mt-4 max-w-lg text-[var(--ink-soft)]">
-            Comentário postado automaticamente pelo GitHub App num Pull Request
-            de teste em produção.
+            Fluxo gravado em produção: abrir o PR e receber o review do bot —
+            sem mock de interface.
           </p>
 
-          <figure className="mt-12">
-            <div className="overflow-hidden rounded-sm border border-[var(--line)] bg-white shadow-[0_24px_80px_-40px_rgba(20,32,28,0.45)]">
-              <Image
-                src="/pr-review-example.png"
-                alt="Comentário real do PR Assistant num Pull Request de teste"
-                width={1280}
-                height={960}
-                className="h-auto w-full"
-                priority={false}
-              />
-            </div>
-            <figcaption className="mt-5 max-w-2xl font-[family-name:var(--font-mono)] text-xs leading-relaxed text-[var(--ink-soft)] sm:text-sm">
-              PR de teste criado propositalmente com falhas intencionais de
-              código (ex.: fetch sem checar status, delete sem tratamento de
-              erro) — não é um trecho de produção da loja. Serve só para
-              validar a análise do bot.
-            </figcaption>
-          </figure>
+          <div className="mt-14 space-y-16">
+            <figure className="mx-auto max-w-3xl">
+              <div className="mb-3 flex items-baseline justify-between gap-4">
+                <p className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
+                  01 · Fluxo
+                </p>
+                <p className="font-[family-name:var(--font-mono)] text-[11px] text-[var(--ink-soft)]">
+                  abrir PR → bot comenta
+                </p>
+              </div>
+              <div className="overflow-hidden rounded-sm border border-[var(--line)] bg-[var(--ink)] shadow-[0_28px_80px_-48px_rgba(20,32,28,0.55)]">
+                <video
+                  className="h-auto w-full bg-black"
+                  src="/pr-assistant-demo.webm"
+                  controls
+                  muted
+                  playsInline
+                  preload="metadata"
+                  poster="/pr-review-example.png"
+                >
+                  Seu navegador não suporta vídeo HTML5.
+                </video>
+              </div>
+              <figcaption className="mt-4 font-[family-name:var(--font-mono)] text-xs leading-relaxed text-[var(--ink-soft)] sm:text-sm">
+                Gravação real: criar o Pull Request e esperar o comentário do
+                PR Assistant aparecer na conversa.
+              </figcaption>
+            </figure>
+
+            <figure className="mx-auto max-w-md sm:max-w-lg">
+              <div className="mb-3 flex items-baseline justify-between gap-4">
+                <p className="font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.18em] text-[var(--accent)]">
+                  02 · Comentário
+                </p>
+                <p className="font-[family-name:var(--font-mono)] text-[11px] text-[var(--ink-soft)]">
+                  review em português
+                </p>
+              </div>
+              <div className="overflow-hidden rounded-sm border border-[var(--line)] bg-white shadow-[0_20px_60px_-40px_rgba(20,32,28,0.4)]">
+                <Image
+                  src="/pr-review-example.png"
+                  alt="Comentário real do PR Assistant num Pull Request de teste"
+                  width={800}
+                  height={600}
+                  className="h-auto w-full"
+                  priority={false}
+                />
+              </div>
+              <figcaption className="mt-4 font-[family-name:var(--font-mono)] text-xs leading-relaxed text-[var(--ink-soft)] sm:text-sm">
+                PR de teste com falhas intencionais — não é código de produção
+                da loja. Validação da análise do bot (Haiku).
+              </figcaption>
+            </figure>
+          </div>
         </div>
       </section>
 
